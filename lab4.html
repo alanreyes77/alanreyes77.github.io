@@ -24,11 +24,13 @@ document.write(name + ", Thank you for ordering! ")
 
 
   item = window.prompt("Would would you like to purchase from our store")
-  document.write("<h1>Name of item Ordered:   " + item + "</h1>" )
+  document.write("<h2>Name of item Ordered:   " + item + "</h2>" )
 
 
   numofitems = window.prompt("How many of these would you like to order?")
-  document.write("<h1>Quantity:    " + numofitems + "</h1>")
+  document.write("<h2>Quantity:    " + numofitems + "</h2>")
+now.setDate(now.getDate()+7);
+document.write("Your order will arrive on: " + now);
 
 
  </script>
