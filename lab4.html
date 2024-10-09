@@ -6,11 +6,13 @@
   var name;
   now = new Date();
   hour = now.getHours();
+  
 
-  name = window.prompt("Enter your name:")
-  document .writeIn(name + ", Thank you for ordering! ")
-  window.prompt("Would would you like to purchase from our store")
-  window.prompt("How many of these would you like to order?")
+  name = window.prompt("Enter your name:" ,"        ")
+  item = window.prompt("Would would you like to purchase from our store")
+  numofitems = window.prompt("How many of these would you like to order?")
+
+
 if(hour<12)
 {
   document.write("<h1>Good Morning ")
@@ -21,7 +23,7 @@ else if(hour <18){
 else{
   document.write("<h1> Good Evening")
 }
-document .write(name + ", Thank you for ordering! ")
+document .writeIn(name + ", Thank you for ordering! ")
 
  </script>
     
