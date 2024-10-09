@@ -2,8 +2,23 @@
 <html>
   <head>
  <script>
+  var name;
+  now = new Date();
+  hour = now.getHours();
   window.alert("Hello, Welcome to my Online Store")
-  window.prompt("Enter your name:")
+
+  name = window.prompt("Enter your name:")
+if(hour<12)
+{
+  document.write("<h1>Good Morning ")
+}
+else if(hour <18){
+  document.write("<h1>Good Afternoon ")
+}
+else{
+  document.write("<h1> Good Evening")
+}
+document .writeIn(name +", Thank you for ordering! ")
   window.prompt("Would would you like to purchase from our store")
   window.prompt("How many of these would you like to order?")
  </script>
@@ -12,4 +27,3 @@
   </head>
 
   </body>
-</html>
