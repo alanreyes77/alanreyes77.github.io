@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-          
+           
         </tbody>
     </table>
 
@@ -27,58 +27,38 @@
 
     <script>
         async function getFacts() {
-            const url = "https://brianobruno.github.io/cats.json"; 
+            const url = "https://brianobruno.github.io/cats.json"; // URL of the API
             const options = {
                 method: "GET", 
             };
 
-            try {
-                let response = await fetch(url, options); 
+            let response = await fetch(url, options); 
 
-                if (!response.ok) { 
-                    console.error('Network response was not ok:', response.statusText);
-                    return;
-                }
+            if (!response.ok) return; 
 
-                const myObj = await response.json(); 
-                console.log("API Response:", myObj); 
+            const myObj = await response.json(); 
 
-                
-                if (!myObj.facts || !Array.isArray(myObj.facts)) {
-                    console.error("No facts array found in the response");
-                    return;
-                }
+            
+            const sortedFacts = myObj.facts.sort((a, b) => a.factId - b.factId);
 
-                
-                const sortedFacts = myObj.facts.sort((a, b) => a.factId - b.factId);
+           
+            const tbody = document.querySelector('#factsTable tbody');
+            tbody.innerHTML = ''; 
 
-                
-                const tbody = document.querySelector('#factsTable tbody');
-                tbody.innerHTML = ''; 
+            
+            sortedFacts.forEach(fact => {
+                const row = document.createElement('tr'); 
+                row.innerHTML = `
+                    <td>${fact.factId}</td>  
+                    <td>${fact.text}</td>   
+                `;
+                tbody.appendChild(row); 
+            });
 
-                
-                sortedFacts.forEach(fact => {
-                    const row = document.createElement('tr'); 
-                    row.innerHTML = `
-                        <td>${fact.factId !== undefined ? fact.factId : "N/A"}</td>  
-                        <td>${fact.text !== undefined ? fact.text : "N/A"}</td>   
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                
-                if (myObj.catPhoto) {
-                    document.getElementById('coco').src = myObj.catPhoto; 
-                } else {
-                    console.warn('Cat photo URL not found in the API response.');
-                }
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
-            }
+           
+            document.getElementById('coco').src = myObj.catPhoto; 
         }
 
-        
-        document.getElementById('button').addEventListener('click', getFacts);
     </script>
 </body>
 </html>
