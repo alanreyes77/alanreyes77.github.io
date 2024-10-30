@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+</head>
+<body>
+    <h1>Lab 7: Dealing with some random Cat REST API</h1>
+
+    <table id="factsTable" border="1">
+        <thead>
+            <tr>
+                <th>Fact ID</th>
+                <th>Facts</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+        </tbody>
+    </table>
+
+    <button id="button">Click button for facts</button>
+
+    <h2>Random Cat Picture</h2>
+    <img id="coco" src="https://i.etsystatic.com/52756250/r/il/9729c7/6187492009/il_fullxfull.6187492009_quxb.jpg" alt="A picture of my cat on New Year's" width="500" height="300">
+
+    <script>
+        async function getFacts() {
+            const url = "https://brianobruno.github.io/cats.json"; 
+            const options = {
+                method: "GET", 
+            };
+
+            let response = await fetch(url, options); 
+
+            if (!response.ok) return; 
+
+            const myObj = await response.json(); 
+
+            
+            const sortedFacts = myObj.facts.sort((a, b) => a.factId - b.factId);
+
+           
+            const tbody = document.querySelector('#factsTable tbody');
+            tbody.innerHTML = ''; 
+
+            
+            sortedFacts.forEach(fact => {
+                const row = document.createElement('tr'); 
+                row.innerHTML = `
+                    <td>${fact.factId}</td>  
+                    <td>${fact.text}</td>   
+                `;
+                tbody.appendChild(row); 
+            });
+
+           
+            document.getElementById('coco').src = myObj.catPhoto; 
+        }
+        document.getElementById("button").addEventListener("click", getFacts);
+    </script>
+</body>
+</html>
