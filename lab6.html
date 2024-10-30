@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Facts and Picture</title> <!-- Add a title for the page -->
 </head>
 <body>
-    <h1>Lab 7 Dealing with some random Cat Rest API </h1>
+    <h1>Lab 7: Dealing with some random Cat REST API</h1>
 
-    
     <table id="factsTable" border="1">
         <thead>
             <tr>
@@ -19,38 +19,41 @@
             
         </tbody>
     </table>
+
     <button id="button">Get Cat Facts</button>
+
     <h2>Random Cat Picture</h2>
-    <img id="coco" src="https://i.etsystatic.com/52756250/r/il/9729c7/6187492009/il_fullxfull.6187492009_quxb.jpg" alt="A picture of my cat on new years " width="200" height="300">
-    
+    <img id="coco" src="https://i.etsystatic.com/52756250/r/il/9729c7/6187492009/il_fullxfull.6187492009_quxb.jpg" alt="rando cat" width="200" height="300">
+
     <script>
-async function Getfacts(){
-    const url = "https://brianobruno.github.io/cats.json";
-const options = 
-    {
- method: "GET",
- };
-let response = await fetch(url, options);
-const result = await response.text();
-const myObj = JSON.parse(result);
-const finorder = myObj.facts.sort((a, b) => a.factId - b.factId);
+        async function getFacts() { 
+            const url = "https://brianobruno.github.io/cats.json";
+            const options = {
+                method: "GET", 
+            };
+
+            let response = await fetch(url, options); 
+            const myObj = await response.json(); 
+
+            
+            const sortedFacts = myObj.facts.sort((a, b) => a.factId - b.factId);
+
+           
             sortedFacts.forEach(fact => {
-                const row = document.createElement('tr'); // Create a new table row
+                const row = document.createElement('tr'); 
                 row.innerHTML = `
-                    <td>${fact.factId}</td>  <!-- Table cell for factId -->
-                    <td>${fact.fact}</td>    <!-- Table cell for the fact -->
+                    <td>${fact.factId}</td>  
+                    <td>${fact.fact}</td>    
                 `;
-                document.querySelector('#factsTable tbody').appendChild(row); // Add the new row to the table
+                document.querySelector('#factsTable tbody').appendChild(row); 
             });
 
-            // Update the cat image with the URL returned by the API
-            document.getElementById('coco').src = "https://i.etsystatic.com/52756250/r/il/9729c7/6187492009/il_fullxfull.6187492009_quxb.jpg"; 
+            
+            document.getElementById('coco').src = myObj.imageUrl; 
         }
 
 
-
-document.getElementById('button').addEventListener('click', getFacts);
-
-    </script> 
+        document.getElementById('button').addEventListener('click', getFacts); 
+    </script>
 </body>
 </html>
