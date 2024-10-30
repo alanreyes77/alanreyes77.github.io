@@ -52,8 +52,8 @@
             sortedFacts.forEach(fact => {
                 const row = document.createElement('tr'); // Create a new table row
                 row.innerHTML = `
-                    <td>${fact.factId !== undefined ? fact.factId : "N/A"}</td>  <!-- Table cell for factId -->
-                    <td>${fact.fact !== undefined ? fact.fact : "N/A"}</td>    <!-- Table cell for the fact -->
+                    <td>${fact.factId}</td>  <!-- Table cell for factId -->
+                    <td>${fact.fact}</td>    <!-- Table cell for the fact -->
                 `;
                 tbody.appendChild(row); // Add the new row to the table
             });
