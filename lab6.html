@@ -16,39 +16,49 @@
             </tr>
         </thead>
         <tbody>
-            
+            <!-- Data will be populated here -->
         </tbody>
     </table>
 
     <button id="button">Get Cat Facts</button>
 
     <h2>Random Cat Picture</h2>
-    <img id="coco" src="https://i.etsystatic.com/52756250/r/il/9729c7/6187492009/il_fullxfull.6187492009_quxb.jpg" alt="rando cat" width="200" height="300">
+    <img id="coco" src="https://i.etsystatic.com/52756250/r/il/9729c7/6187492009/il_fullxfull.6187492009_quxb.jpg" alt="A picture of my cat on New Year's" width="200" height="300">
 
     <script>
-        async function getFacts() { 
+        async function getFacts() { // Fixed function name to match the event listener
             const url = "https://brianobruno.github.io/cats.json";
             const options = {
-                method: "GET", 
+                method: "GET", // Use GET method to retrieve data
             };
 
-            let response = await fetch(url, options); 
-            const myObj = await response.json(); 
+            let response = await fetch(url, options); // Fetch data from the API
 
-            
+            if (!response.ok) { // Check if the response is ok (status in the range 200-299)
+                console.error('Network response was not ok:', response.statusText);
+                return;
+            }
+
+            const myObj = await response.json(); // Parse the response as JSON
+
+            // Sort the facts array by factId
             const sortedFacts = myObj.facts.sort((a, b) => a.factId - b.factId);
 
-           
+            // Clear the table body before populating new data
+            const tbody = document.querySelector('#factsTable tbody');
+            tbody.innerHTML = ''; // Clear any existing rows
+
+            // Populate the table with the sorted facts
             sortedFacts.forEach(fact => {
-                const row = document.createElement('tr'); 
+                const row = document.createElement('tr'); // Create a new table row
                 row.innerHTML = `
-                    <td>${fact.factId}</td>  
-                    <td>${fact.fact}</td>    
+                    <td>${fact.factId !== undefined ? fact.factId : "N/A"}</td>  <!-- Table cell for factId -->
+                    <td>${fact.fact !== undefined ? fact.fact : "N/A"}</td>    <!-- Table cell for the fact -->
                 `;
-                document.querySelector('#factsTable tbody').appendChild(row); 
+                tbody.appendChild(row); // Add the new row to the table
             });
 
-            
+            // Update the cat image with the URL returned by the API
             if (myObj.imageUrl) {
                 document.getElementById('coco').src = myObj.imageUrl; // Use imageUrl from myObj
             } else {
@@ -56,8 +66,8 @@
             }
         }
 
-
-        document.getElementById('button').addEventListener('click', getFacts); 
+        // Add event listener to the button
+        document.getElementById('button').addEventListener('click', getFacts); // Corrected to match function name
     </script>
 </body>
 </html>
