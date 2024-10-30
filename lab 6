@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Lab 7 Dealing with some random Cat Rest API </h1>
+    <button id="button">Get Cat Facts</button>
+    
+    <table id="factsTable" border="1">
+        <thead>
+            <tr>
+                <th>Fact ID</th>
+                <th>Facts</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+    <h2>Random Cat Picture</h2>
+    <img id="coco" src="IMG_0673.jpeg" alt="A picture of my cat on new years " width="200" height="300">
+    
+    <script src="main.js"></script> 
+</body>
+</html>
