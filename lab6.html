@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            
+            <!-- Data will be populated here -->
         </tbody>
     </table>
 
@@ -29,51 +29,60 @@
         async function getFacts() {
             const url = "https://brianobruno.github.io/cats.json";
             const options = {
-                method: "GET", 
+                method: "GET", // Use GET method to retrieve data
             };
 
-            let response = await fetch(url, options); 
+            try {
+                let response = await fetch(url, options); // Fetch data from the API
 
-            if (!response.ok) { 
-                console.error('Network response was not ok:', response.statusText);
-                return;
-            }
+                if (!response.ok) { // Check if the response is ok
+                    console.error('Network response was not ok:', response.statusText);
+                    return;
+                }
 
-            const myObj = await response.json(); 
-            console.log("API Response:", myObj); 
+                const myObj = await response.json(); // Parse the response as JSON
+                console.log("API Response:", myObj); // Log the entire response for debugging
 
-            
-            if (!myObj.facts || !Array.isArray(myObj.facts)) {
-                console.error("No facts array found in the response");
-                return;
-            }
+                // Check if the facts array exists and is an array
+                if (!myObj.facts || !Array.isArray(myObj.facts)) {
+                    console.error("No facts array found in the response");
+                    return;
+                }
 
-            
-            const sortedFacts = myObj.facts.sort((a, b) => a.factId - b.factId);
+                // Log each fact to inspect the structure
+                myObj.facts.forEach((fact, index) => {
+                    console.log(`Fact ${index}:`, fact);
+                });
 
-            
-            const tbody = document.querySelector('#factsTable tbody');
-        
+                // Sort the facts array by factId
+                const sortedFacts = myObj.facts.sort((a, b) => a.factId - b.factId);
 
-          
-            sortedFacts.forEach(fact => {
-                const row = document.createElement('tr'); 
-                row.innerHTML = `
-                    <td>${fact.factId !== undefined ? fact.factId : "N/A"}</td>  <!-- Table cell for factId -->
-                    <td>${fact.fact !== undefined ? fact.fact : "N/A"}</td>    <!-- Table cell for the fact -->
-                `;
-                tbody.appendChild(row);
-            });
+                // Clear the table body before populating new data
+                const tbody = document.querySelector('#factsTable tbody');
+                tbody.innerHTML = ''; // Clear any existing rows
 
-            
-            if (myObj.imageUrl) {
-                document.getElementById('coco').src = myObj.imageUrl;
-            } else {
-                console.warn('Image URL not found in the API response.');
+                // Populate the table with the sorted facts
+                sortedFacts.forEach(fact => {
+                    const row = document.createElement('tr'); // Create a new table row
+                    row.innerHTML = `
+                        <td>${fact.factId !== undefined ? fact.factId : "N/A"}</td>  <!-- Table cell for factId -->
+                        <td>${fact.fact !== undefined ? fact.fact : "N/A"}</td>    <!-- Table cell for the fact -->
+                    `;
+                    tbody.appendChild(row); // Add the new row to the table
+                });
+
+                // Update the cat image with the URL returned by the API
+                if (myObj.imageUrl) {
+                    document.getElementById('coco').src = myObj.imageUrl; // Use imageUrl from myObj
+                } else {
+                    console.warn('Image URL not found in the API response.');
+                }
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
             }
         }
 
-        
+        // Add event listener to the button
         document.getElementById('button').addEventListener('click', getFacts);
     </script>
 </body>
