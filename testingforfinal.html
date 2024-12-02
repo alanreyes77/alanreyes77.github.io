@@ -109,19 +109,7 @@ body{
       });
   </script>
     <div class="container">
-    <h1 class="text-center mb-4">NASA NEO Data (Near-Earth Objects)</h1>
-
-    <!-- Date Picker -->
-    <div class="row mb-3">
-      <div class="col text-center">
-        <label for="start-date">Start Date</label>
-        <input type="date" id="start-date" class="form-control" value="2015-09-07">
-      </div>
-      <div class="col text-center">
-        <label for="end-date">End Date</label>
-        <input type="date" id="end-date" class="form-control" value="2015-09-08">
-      </div>
-    </div>
+    <h1 class="text-center mb-4">NASA NEO Browse Data</h1>
 
     <!-- Button to fetch data -->
     <div class="text-center">
@@ -140,19 +128,16 @@ body{
   <script>
     // JavaScript code to fetch and display the data
     document.getElementById('fetch-data-btn').addEventListener('click', function() {
-      const startDate = document.getElementById('start-date').value;
-      const endDate = document.getElementById('end-date').value;
-
-      const apiUrl = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=DEMO_KEY`;
+      const apiUrl = `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=DEMO_KEY`;
 
       // Fetch data from NASA API
       fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-          if (data.near_earth_objects) {
+          if (data.near_earth_objects && data.near_earth_objects.length > 0) {
             displayNEOData(data.near_earth_objects);
           } else {
-            document.getElementById('neo-data').innerHTML = `<div class="alert alert-warning">No data available for the selected dates.</div>`;
+            document.getElementById('neo-data').innerHTML = `<div class="alert alert-warning">No NEO data available.</div>`;
           }
         })
         .catch(error => {
@@ -167,35 +152,36 @@ body{
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th scope="col">Date</th>
               <th scope="col">Name</th>
+              <th scope="col">ID</th>
               <th scope="col">Size (meters)</th>
-              <th scope="col">Distance (km)</th>
+              <th scope="col">Miss Distance (km)</th>
               <th scope="col">Velocity (km/h)</th>
             </tr>
           </thead>
           <tbody>
       `;
 
-      // Loop through the dates and their NEOs
-      for (const date in neoData) {
-        neoData[date].forEach(neo => {
-          tableContent += `
-            <tr>
-              <td>${date}</td>
-              <td>${neo.name}</td>
-              <td>${neo.estimated_diameter.meters.estimated_diameter_max}</td>
-              <td>${neo.close_approach_data[0].miss_distance.kilometers}</td>
-              <td>${neo.close_approach_data[0].relative_velocity.kilometers_per_hour}</td>
-            </tr>
-          `;
-        });
-      }
+      // Loop through the NEOs
+      neoData.forEach(neo => {
+        tableContent += `
+          <tr>
+            <td>${neo.name}</td>
+            <td>${neo.id}</td>
+            <td>${neo.estimated_diameter.meters.estimated_diameter_max}</td>
+            <td>${neo.close_approach_data[0].miss_distance.kilometers}</td>
+            <td>${neo.close_approach_data[0].relative_velocity.kilometers_per_hour}</td>
+          </tr>
+        `;
+      });
 
       tableContent += '</tbody></table>';
       document.getElementById('neo-data').innerHTML = tableContent;
     }
   </script>
+
+
+
 
   <!-- Link to Bootstrap JS (optional, for certain Bootstrap components) -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
