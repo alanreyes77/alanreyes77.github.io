@@ -3,88 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NASA NEO API</title>
-  <!-- Bootstrap CSS (CDN) -->
+  <title>API Data in Cards</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-dark text-white">
+<body>
 
-  <div class="container mt-5">
-    <h1 class="text-center mb-4">NASA Near-Earth Objects</h1>
-    <div class="row" id="neo-gallery">
-      <!-- NEO objects will be displayed here -->
+<!-- Card to trigger API data fetch -->
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-4">
+      <!-- Card linked to API (when clicked, will fetch API data and show it below) -->
+      <div class="card" id="fetchDataCard" style="cursor: pointer;">
+        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
+        <div class="card-body">
+          <h5 class="card-title">Click to Load API Data</h5>
+          <p class="card-text">Click on this card to fetch data from an API and display it below.</p>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-  <script>
-    // URL for the NASA NEO API
-    const apiUrl = 'https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=DEMO_KEY';
+<!-- Section where API data will be displayed -->
+<div class="container mt-5" id="api-data-container">
+  <div class="row" id="cards-container">
+    <!-- The API data will be dynamically injected here -->
+  </div>
+</div>
 
-    // Fetch data from the API
-    fetch(apiUrl)
-      .then(response => response.json())  // Convert response to JSON
-      .then(data => {
-        const neos = data.near_earth_objects;
-        if (neos && neos.length > 0) {
-          // Get the NEO gallery container
-          const gallery = document.getElementById('neo-gallery');
-          
-          // Loop through the NEO objects and display them
-          neos.forEach(neo => {
-            // Create a Bootstrap column for each NEO object
-            const col = document.createElement('div');
-            col.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
-            
-            // Create the card element for each NEO
-            const card = document.createElement('div');
-            card.classList.add('card', 'bg-dark', 'text-white');
+<script>
+  // Function to fetch the data from the API
+  async function fetchApiData() {
+    const apiUrl = "https://jsonplaceholder.typicode.com/posts"; // Example API
 
-            // Add a title to the card (NEO name)
-            const title = document.createElement('h5');
-            title.classList.add('card-header');
-            title.textContent = `Name: ${neo.name}`;
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      
+      // Call function to display the data in a structured format
+      displayData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      document.getElementById('cards-container').innerHTML = 'Failed to load data.';
+    }
+  }
 
-            // Create the card body
-            const cardBody = document.createElement('div');
-            cardBody.classList.add('card-body');
+  // Function to display the fetched data in cards
+  function displayData(data) {
+    const container = document.getElementById('cards-container');
+    container.innerHTML = ''; // Clear any previous content
 
-            // Add the NEO details to the card
-            const details = document.createElement('p');
-            details.classList.add('card-text');
-            details.innerHTML = `
-              <strong>Estimated Diameter:</strong> ${neo.estimated_diameter.meters.estimated_diameter_min} - ${neo.estimated_diameter.meters.estimated_diameter_max} meters<br>
-              <strong>Miss Distance:</strong> ${neo.close_approach_data[0].miss_distance.kilometers} kilometers<br>
-              <strong>Orbiting Planet:</strong> ${neo.orbiting_body}
-            `;
+    // Loop through the data and create cards for each item
+    data.forEach(item => {
+      const card = `
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">${item.title}</h5>
+              <p class="card-text">${item.body}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      container.innerHTML += card; // Append the card to the container
+    });
+  }
 
-            // Append the title and details to the card body
-            cardBody.appendChild(details);
+  // Event listener for card click to fetch API data
+  document.getElementById('fetchDataCard').addEventListener('click', function() {
+    fetchApiData(); // Fetch the data and display it
+  });
+</script>
 
-            // Append the title and body to the card
-            card.appendChild(title);
-            card.appendChild(cardBody);
-
-            // Append the card to the column
-            col.appendChild(card);
-
-            // Finally, append the column to the gallery
-            gallery.appendChild(col);
-          });
-        } else {
-          // If no NEOs are found, show a message
-          const gallery = document.getElementById('neo-gallery');
-          gallery.innerHTML = '<p class="text-center">No Near-Earth Objects found.</p>';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  </script>
-
-  <!-- Bootstrap JS (optional) -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>
+
