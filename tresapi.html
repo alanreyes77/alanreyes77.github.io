@@ -3,56 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Information Cards</title>
+  <title>API Data in Cards</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
+<!-- Card to trigger API data fetch -->
 <div class="container mt-5">
   <div class="row">
-    <!-- Card 1 -->
     <div class="col-md-4">
-      <a href="https://api.example.com/data/1" class="card-link">
-        <div class="card">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
-          <div class="card-body">
-            <h5 class="card-title">Card 1</h5>
-            <p class="card-text">Some quick example text for Card 1. Click to get API data.</p>
-          </div>
+      <!-- Card linked to API (when clicked, will fetch API data and show it below) -->
+      <div class="card" id="fetchDataCard" style="cursor: pointer;">
+        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
+        <div class="card-body">
+          <h5 class="card-title">Click to Load API Data</h5>
+          <p class="card-text">Click on this card to fetch data from an API and display it below.</p>
         </div>
-      </a>
-    </div>
-    
-    <!-- Card 2 -->
-    <div class="col-md-4">
-      <a href="https://api.example.com/data/2" class="card-link">
-        <div class="card">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
-          <div class="card-body">
-            <h5 class="card-title">Card 2</h5>
-            <p class="card-text">Click to see API data for Card 2.</p>
-          </div>
-        </div>
-      </a>
-    </div>
-    
-    <!-- Card 3 -->
-    <div class="col-md-4">
-      <a href="https://api.example.com/data/3" class="card-link">
-        <div class="card">
-          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
-          <div class="card-body">
-            <h5 class="card-title">Card 3</h5>
-            <p class="card-text">Click to fetch data for Card 3 from the API.</p>
-          </div>
-        </div>
-      </a>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- Section where API data will be displayed -->
+<div class="container mt-5" id="api-data-container">
+  <div class="row" id="cards-container">
+    <!-- The API data will be dynamically injected here -->
+  </div>
+</div>
+
+<script>
+  // Function to fetch the data from the API
+  async function fetchApiData() {
+    const apiUrl = "https://jsonplaceholder.typicode.com/posts"; // Example API
+
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      
+      // Call function to display the data in a structured format
+      displayData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      document.getElementById('cards-container').innerHTML = 'Failed to load data.';
+    }
+  }
+
+  // Function to display the fetched data in cards
+  function displayData(data) {
+    const container = document.getElementById('cards-container');
+    container.innerHTML = ''; // Clear any previous content
+
+    // Loop through the data and create cards for each item
+    data.forEach(item => {
+      const card = `
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">${item.title}</h5>
+              <p class="card-text">${item.body}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      container.innerHTML += card; // Append the card to the container
+    });
+  }
+
+  // Event listener for card click to fetch API data
+  document.getElementById('fetchDataCard').addEventListener('click', function() {
+    fetchApiData(); // Fetch the data and display it
+  });
+</script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
+
