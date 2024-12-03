@@ -3,42 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NASA NEO Data</title>
-  <!-- Bootstrap CSS (CDN) -->
+  <title>API Information Cards</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-dark text-white">
+<body>
 
-  <div class="container mt-5">
-    <h1 class="text-center mb-4">NASA NEO Data</h1>
-    
-    <!-- Example Card with Link to NEO API -->
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card p-3">
-        <blockquote class="blockquote mb-0 card-body">
-          <p>The Universe is not only stranger than we imagine, it is stranger than we can imagine.</p>
-          <footer class="blockquote-footer">
-            <small class="text-muted">
-              Sir Arthur Eddington<cite title="Source Title">The Nature of the Physical World</cite>
-            </small>
-          </footer>
-          <!-- Link to NASA API Endpoint -->
-          <div class="mt-3">
-            <a href="https://api.nasa.gov/neo/rest/v1/feed?start_date=2023-10-01&end_date=2023-10-02&api_key=DEMO_KEY" 
-               target="_blank" class="btn btn-primary">
-              View NEO Data (Feed)
-            </a>
+<div class="container mt-5">
+  <div class="row">
+    <!-- Card 1 -->
+    <div class="col-md-4">
+      <a href="https://api.example.com/data/1" class="card-link">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
+          <div class="card-body">
+            <h5 class="card-title">Card 1</h5>
+            <p class="card-text">Some quick example text for Card 1. Click to get API data.</p>
           </div>
-        </blockquote>
-      </div>
+        </div>
+      </a>
     </div>
     
+    <!-- Card 2 -->
+    <div class="col-md-4">
+      <a href="https://api.example.com/data/2" class="card-link">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
+          <div class="card-body">
+            <h5 class="card-title">Card 2</h5>
+            <p class="card-text">Click to see API data for Card 2.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <!-- Card 3 -->
+    <div class="col-md-4">
+      <a href="https://api.example.com/data/3" class="card-link">
+        <div class="card">
+          <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
+          <div class="card-body">
+            <h5 class="card-title">Card 3</h5>
+            <p class="card-text">Click to fetch data for Card 3 from the API.</p>
+          </div>
+        </div>
+      </a>
+    </div>
   </div>
+</div>
 
-  <!-- Bootstrap JS (optional) -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
