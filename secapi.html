@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA Image Gallery</title>
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white">
+
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">NASA Image Gallery - Moon</h1>
+    <div class="row" id="image-gallery">
+      <!-- Images will be displayed here -->
+    </div>
+  </div>
+
+  <script>
+    // URL for the NASA Images API search endpoint (search for images related to 'moon')
+    const apiUrl = 'https://images-api.nasa.gov/search?q=moon&media_type=image';
+
+    // Fetch data from the API
+    fetch(apiUrl)
+      .then(response => response.json())  // Convert response to JSON
+      .then(data => {
+        const items = data.collection.items;
+        
+        if (items && items.length > 0) {
+          // Get the image gallery container
+          const gallery = document.getElementById('image-gallery');
+          
+          // Loop through the items and display the images
+          items.forEach(item => {
+            // Check if the item has media (image URL)
+            if (item.links && item.links.length > 0) {
+              const imageUrl = item.links[0].href;
+              const title = item.data[0].title || 'No title available';
+
+              // Create a Bootstrap column for each image
+              const col = document.createElement('div');
+              col.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
+              
+              // Create the card element for each image
+              const card = document.createElement('div');
+              card.classList.add('card', 'bg-dark', 'text-white');
+
+              // Add the image to the card
+              const img = document.createElement('img');
+              img.classList.add('card-img-top');
+              img.src = imageUrl;  // Set the image URL
+              img.alt = title;
+
+              // Create the card body with the title
+              const cardBody = document.createElement('div');
+              cardBody.classList.add('card-body');
+
+              const imgTitle = document.createElement('h5');
+              imgTitle.classList.add('card-title');
+              imgTitle.textContent = title;
+
+              // Append the title to the card body
+              cardBody.appendChild(imgTitle);
+
+              // Append the image and card body to the card
+              card.appendChild(img);
+              card.appendChild(cardBody);
+
+              // Append the card to the column
+              col.appendChild(card);
+
+              // Finally, append the column to the gallery
+              gallery.appendChild(col);
+            }
+          });
+        } else {
+          // If no images are found, show a message
+          const gallery = document.getElementById('image-gallery');
+          gallery.innerHTML = '<p class="text-center">No images found for the given search query.</p>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  </script>
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
