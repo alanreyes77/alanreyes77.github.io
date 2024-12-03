@@ -66,7 +66,6 @@ body{
         <p>Here we have a picture of the moon in its beauty</p> 
         <p>TESTING TO MAAKE SURE THIS WORKS</p> 
       </div>
-
   <br>
   <br>
   <br>
@@ -147,37 +146,7 @@ body{
     });
 
     // Function to display the NEO data in a table
-    function displayNEOData(neoData) {
-      let tableContent = `
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">ID</th>
-              <th scope="col">Size (meters)</th>
-              <th scope="col">Miss Distance (km)</th>
-              <th scope="col">Velocity (km/h)</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      // Loop through the NEOs
-      neoData.forEach(neo => {
-        tableContent += `
-          <tr>
-            <td>${neo.name}</td>
-            <td>${neo.id}</td>
-            <td>${neo.estimated_diameter.meters.estimated_diameter_max}</td>
-            <td>${neo.close_approach_data[0].miss_distance.kilometers}</td>
-            <td>${neo.close_approach_data[0].relative_velocity.kilometers_per_hour}</td>
-          </tr>
-        `;
-      });
-
-      tableContent += '</tbody></table>';
-      document.getElementById('neo-data').innerHTML = tableContent;
-    }
+    
   </script>
 
 <div class="container">
@@ -193,17 +162,22 @@ body{
     </div>
 
     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card p-3">
-        <blockquote class="blockquote mb-0 card-body">
-          <p>The Universe is not only stranger than we imagine, it is stranger then we can imagine.</p>
-          <footer class="blockquote-footer">
-            <small class="text-muted">
-              Sir Arthur Eddington<cite title="Source Title">The Nature of the Physical World</cite>
-            </small>
-          </footer>
-        </blockquote>
+        <div class="card bg-dark text-white p-3">
+          <!-- Add an image to the card -->
+          <img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dW5pdmVyc2V8ZW58MHx8MHx8fDA%3D" class="card-img-top" alt="Card image">
+      
+          <!-- Blockquote content -->
+          <blockquote class="blockquote mb-0 card-body">
+            <p>The Universe is not only stranger than we imagine, it is stranger than we can imagine.</p>
+            <footer class="blockquote-footer">
+              <small class="text-muted">
+                Sir Arthur Eddington <cite title="Source Title">The Nature of the Physical World</cite>
+              </small>
+            </footer>
+          </blockquote>
+        </div>
       </div>
-    </div>
+      
 
     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
       <div class="card">
