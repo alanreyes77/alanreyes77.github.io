@@ -3,110 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NASA NEO API Example</title>
+  <title>NASA NEO Data</title>
   <!-- Bootstrap CSS (CDN) -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark text-white">
 
   <div class="container mt-5">
-    <h1 class="text-center mb-4">NASA NEO API Data</h1>
-    
-    <!-- Section for Date Range NEO Feed -->
-    <h2>Date Range NEO Feed</h2>
-    <div id="feed-gallery" class="row"></div>
-    
-    <!-- Section for Single NEO Object -->
-    <h2>Single NEO by ID</h2>
-    <div id="single-neo" class="row"></div>
+    <h1 class="text-center mb-4">NASA Near-Earth Object Data</h1>
 
-    <!-- Section for NEO Browse -->
-    <h2>Browse NEOs</h2>
-    <div id="neo-browse" class="row"></div>
+    <!-- Results Section -->
+    <div id="results"></div>
   </div>
-
-  <script>
-    // Fetch NEO Data by Date Range (for demonstration)
-    const startDate = '2023-10-01';
-    const endDate = '2023-10-02';
-    const apiKey = 'DEMO_KEY';
-    const apiUrl = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
-
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        const neos = data.near_earth_objects;
-        const gallery = document.getElementById('feed-gallery');
-        for (let date in neos) {
-          neos[date].forEach(neo => {
-            const card = document.createElement('div');
-            card.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
-            card.innerHTML = `
-              <div class="card bg-dark text-white">
-                <div class="card-body">
-                  <h5 class="card-title">${neo.name}</h5>
-                  <p class="card-text">Size: ${neo.estimated_diameter.kilometers.estimated_diameter_max} km</p>
-                </div>
-              </div>
-            `;
-            gallery.appendChild(card);
-          });
-        }
-      })
-      .catch(error => console.error('Error fetching data:', error));
-
-    // Fetch Single NEO by ID
-    const neoId = '3542519';
-    const singleNeoUrl = `https://api.nasa.gov/neo/rest/v1/neo/${neoId}?api_key=DEMO_KEY`;
-
-    fetch(singleNeoUrl)
-      .then(response => response.json())
-      .then(data => {
-        const singleNeoDiv = document.getElementById('single-neo');
-        const neo = data;
-        const card = document.createElement('div');
-        card.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
-        card.innerHTML = `
-          <div class="card bg-dark text-white">
-            <div class="card-body">
-              <h5 class="card-title">${neo.name}</h5>
-              <p class="card-text">Size: ${neo.estimated_diameter.kilometers.estimated_diameter_max} km</p>
-            </div>
-          </div>
-        `;
-        singleNeoDiv.appendChild(card);
-      })
-      .catch(error => console.error('Error fetching data:', error));
-
-    // Fetch NEO Browse
-    const browseUrl = 'https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=DEMO_KEY';
-
-    fetch(browseUrl)
-      .then(response => response.json())
-      .then(data => {
-        const neos = data.near_earth_objects;
-        const gallery = document.getElementById('neo-browse');
-        neos.forEach(neo => {
-          const card = document.createElement('div');
-          card.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
-          card.innerHTML = `
-            <div class="card bg-dark text-white">
-              <div class="card-body">
-                <h5 class="card-title">${neo.name}</h5>
-                <p class="card-text">Size: ${neo.estimated_diameter.kilometers.estimated_diameter_max} km</p>
-              </div>
-            </div>
-          `;
-          gallery.appendChild(card);
-        });
-      })
-      .catch(error => console.error('Error fetching data:', error));
-  </script>
 
   <!-- Bootstrap JS (optional) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    // Retrieve the query parameters from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const startDate = urlParams.get('start_date');
+    const endDate = urlParams.get('end_date');
+    const apiKey = 'DEMO_KEY';
+
+    // Construct the API URL with the passed parameters
+    const apiUrl = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
+
+    // Fetch the data from the API
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const resultsContainer = document.getElementById('results');
+        if (data.near_earth_objects) {
+          // Loop through the objects and display the relevant information
+          for (let date in data.near_earth_objects) {
+            const dayObjects = data.near_earth_objects[date];
+            const dayContainer = document.createElement('div');
+            dayContainer.classList.add('mb-4');
+
+            // Title for the date
+            const dateTitle = document.createElement('h2');
+            dateTitle.classList.add('text-center');
+            dateTitle.textContent = `Asteroids for ${date}`;
+            dayContainer.appendChild(dateTitle);
+
+            // Loop through each object and display details
+            dayObjects.forEach(neo => {
+              const neoCard = document.createElement('div');
+              neoCard.classList.add('card', 'mb-3', 'bg-dark', 'text-white');
+
+              // Card body
+              const cardBody = document.createElement('div');
+              cardBody.classList.add('card-body');
+              const neoName = document.createElement('h5');
+              neoName.classList.add('card-title');
+              neoName.textContent = neo.name;
+
+              const neoDetails = document.createElement('p');
+              neoDetails.classList.add('card-text');
+              neoDetails.innerHTML = `
+                <strong>Size:</strong> ${neo.estimated_diameter.kilometers.estimated_diameter_max} km
+                <br>
+                <strong>Hazardous:</strong> ${neo.is_potentially_hazardous_asteroid ? 'Yes' : 'No'}
+              `;
+
+              cardBody.appendChild(neoName);
+              cardBody.appendChild(neoDetails);
+              neoCard.appendChild(cardBody);
+              dayContainer.appendChild(neoCard);
+            });
+
+            // Append the day's container to the results section
+            resultsContainer.appendChild(dayContainer);
+          }
+        } else {
+          resultsContainer.innerHTML = '<p class="text-center">No data available for the given date range.</p>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        document.getElementById('results').innerHTML = '<p class="text-center">There was an error retrieving the data.</p>';
+      });
+  </script>
 
 </body>
 </html>
