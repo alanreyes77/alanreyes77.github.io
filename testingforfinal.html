@@ -203,6 +203,89 @@ body{
   </div>
 </div>
 
+  <div class="container mt-5">
+    <h1 class="text-center">NASA Curiosity Rover Photos (Sol 1000)</h1>
+    <div class="row" id="photo-gallery">
+      <!-- Photos will be displayed here -->
+    </div>
+  </div>
+
+  <!-- JavaScript (Fetch API to get the data and display images) -->
+  <script>
+    // URL for the NASA API with the desired Sol and API Key
+    const apiUrl = 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY';
+
+    // Fetch data from the API
+    fetch(apiUrl)
+      .then(response => response.json())  // Convert response to JSON
+      .then(data => {
+        // Check if photos are returned
+        const photos = data.photos;
+        if (photos && photos.length > 0) {
+          // Get the photo gallery container
+          const gallery = document.getElementById('photo-gallery');
+          
+          // Loop through the photos and display them
+          photos.forEach(photo => {
+            // Create a Bootstrap column for each image
+            const col = document.createElement('div');
+            col.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
+            
+            // Create the card element
+            const card = document.createElement('div');
+            card.classList.add('card', 'bg-dark', 'text-white');
+
+            // Add the image to the card
+            const img = document.createElement('img');
+            img.classList.add('card-img-top');
+            img.src = photo.img_src;  // Set the source of the image
+            img.alt = `Photo from Sol ${photo.sol}`;
+            
+            // Create the card body
+            const cardBody = document.createElement('div');
+            cardBody.classList.add('card-body');
+
+            // Add a title and text to the card
+            const title = document.createElement('h5');
+            title.classList.add('card-title');
+            title.textContent = `Sol ${photo.sol}`;
+
+            const caption = document.createElement('p');
+            caption.classList.add('card-text');
+            caption.textContent = `Camera: ${photo.camera.full_name}`;
+
+            // Append the image, title, and caption to the card body
+            cardBody.appendChild(title);
+            cardBody.appendChild(caption);
+
+            // Append the image and card body to the card
+            card.appendChild(img);
+            card.appendChild(cardBody);
+
+            // Append the card to the column
+            col.appendChild(card);
+
+            // Finally, append the column to the gallery
+            gallery.appendChild(col);
+          });
+        } else {
+          // If no photos are found, show a message
+          const gallery = document.getElementById('photo-gallery');
+          gallery.innerHTML = '<p class="text-center">No photos found for the given Sol.</p>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  </script>
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
   <!-- Link to Bootstrap JS (optional, for certain Bootstrap components) -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
