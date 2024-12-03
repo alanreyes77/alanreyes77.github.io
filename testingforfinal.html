@@ -107,48 +107,7 @@ body{
         console.error('Error fetching the APOD data:', error);
       });
   </script>
-    <div class="container">
-    <h1 class="text-center mb-4">NASA NEO Browse Data</h1>
-
-    <!-- Button to fetch data -->
-    <div class="text-center">
-      <button id="fetch-data-btn" class="btn btn-primary">Fetch NEO Data</button>
-    </div>
-
-    <!-- Table to display results -->
-    <div id="neo-data" class="mt-5">
-      <!-- The data will be displayed here -->
-    </div>
-  </div>
-
-  <!-- Bootstrap JS (optional for modals, tooltips, etc.) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0FO9e0qGRFoeDgBx5XzGZ9JX2tq1Q4PkaeFsY8gIsOqb1M4b" crossorigin="anonymous"></script>
-
-  <script>
-    // JavaScript code to fetch and display the data
-    document.getElementById('fetch-data-btn').addEventListener('click', function() {
-      const apiUrl = `https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=DEMO_KEY`;
-
-      // Fetch data from NASA API
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          if (data.near_earth_objects && data.near_earth_objects.length > 0) {
-            displayNEOData(data.near_earth_objects);
-          } else {
-            document.getElementById('neo-data').innerHTML = `<div class="alert alert-warning">No NEO data available.</div>`;
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-          document.getElementById('neo-data').innerHTML = `<div class="alert alert-danger">Error fetching data from NASA API. Please try again later.</div>`;
-        });
-    });
-
-    // Function to display the NEO data in a table
-    
-  </script>
-
+  
 <div class="container">
   <div class="row">
     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
@@ -180,23 +139,23 @@ body{
       
 
     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card">
-        <img class="card-img-top" src="..." alt="Card image cap">
+      <div class="card bg-dark text-white p-3">
+        <img src="https://science.nasa.gov/wp-content/uploads/2024/07/pia26344-perseverance-selfie-at-cheyava.jpg?w=4096&format=jpeg" class="card-img-top" alt="Pictures of mars hopefully ">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          <h5 class="card-title">Rover Images of Mars</h5>
+          <p class="card-text">NASA is able to take pictures of the mars surface and send them back home for review</p>
         </div>
       </div>
     </div>
 
     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
       <div class="card bg-primary text-white text-center p-3">
+        <img src="https://science.nasa.gov/wp-content/uploads/2023/03/main-image-star-forming-region-carina-nircam-final-5mb-1-jpeg.webp?w=4096&format=png" alt="Pictures of universe for einstein quote">
         <blockquote class="blockquote mb-0">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+          <p>Two things are infinite: The universe and human stupidty: And im not sure about the universe</p>
           <footer class="blockquote-footer">
             <small>
-              Someone famous in <cite title="Source Title">Source Title</cite>
+              Albert Einstein <cite title="Source Title"></cite>
             </small>
           </footer>
         </blockquote>
@@ -250,3 +209,4 @@ body{
 
 </body>
 </html>
+
