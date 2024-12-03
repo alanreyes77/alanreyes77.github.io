@@ -3,85 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curiosity Rover Images</title>
+  <title>NASA NEO Data</title>
   <!-- Bootstrap CSS (CDN) -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-dark text-white">
 
   <div class="container mt-5">
-    <h1 class="text-center mb-4">Curiosity Rover Photos - Earth Date: 2015-06-03</h1>
-    <div class="row" id="image-gallery">
-      <!-- Images will be displayed here -->
+    <h1 class="text-center mb-4">NASA NEO Data</h1>
+    
+    <!-- Example Card with Link to NEO API -->
+    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+      <div class="card p-3">
+        <blockquote class="blockquote mb-0 card-body">
+          <p>The Universe is not only stranger than we imagine, it is stranger than we can imagine.</p>
+          <footer class="blockquote-footer">
+            <small class="text-muted">
+              Sir Arthur Eddington<cite title="Source Title">The Nature of the Physical World</cite>
+            </small>
+          </footer>
+          <!-- Link to NASA API Endpoint -->
+          <div class="mt-3">
+            <a href="https://api.nasa.gov/neo/rest/v1/feed?start_date=2023-10-01&end_date=2023-10-02&api_key=DEMO_KEY" 
+               target="_blank" class="btn btn-primary">
+              View NEO Data (Feed)
+            </a>
+          </div>
+        </blockquote>
+      </div>
     </div>
+    
   </div>
-
-  <script>
-    // URL for the Curiosity Rover's photos on Earth date 2015-06-03
-    const apiUrl = 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2015-06-03&api_key=DEMO_KEY';
-
-    // Fetch data from the API
-    fetch(apiUrl)
-      .then(response => response.json())  // Convert response to JSON
-      .then(data => {
-        const photos = data.photos; // Array of photos returned from the API
-        
-        if (photos && photos.length > 0) {
-          // Get the image gallery container
-          const gallery = document.getElementById('image-gallery');
-          
-          // Loop through the photos and display the images
-          photos.forEach(photo => {
-            // Create a Bootstrap column for each photo
-            const col = document.createElement('div');
-            col.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
-            
-            // Create the card element for each photo
-            const card = document.createElement('div');
-            card.classList.add('card', 'bg-dark', 'text-white');
-
-            // Add the image to the card
-            const img = document.createElement('img');
-            img.classList.add('card-img-top');
-            img.src = photo.img_src;  // Set the image URL from the API response
-            img.alt = `Curiosity Rover Image - ${photo.id}`;
-
-            // Create the card body with the photo's details (e.g., camera name, photo ID)
-            const cardBody = document.createElement('div');
-            cardBody.classList.add('card-body');
-
-            const imgTitle = document.createElement('h5');
-            imgTitle.classList.add('card-title');
-            imgTitle.textContent = `Photo ID: ${photo.id}`;
-
-            const cameraDetails = document.createElement('p');
-            cameraDetails.classList.add('card-text');
-            cameraDetails.innerHTML = `<strong>Camera:</strong> ${photo.camera.full_name}`;
-
-            // Append the title and camera details to the card body
-            cardBody.appendChild(imgTitle);
-            cardBody.appendChild(cameraDetails);
-
-            // Append the image and card body to the card
-            card.appendChild(img);
-            card.appendChild(cardBody);
-
-            // Append the card to the column
-            col.appendChild(card);
-
-            // Finally, append the column to the gallery
-            gallery.appendChild(col);
-          });
-        } else {
-          // If no photos are found, show a message
-          const gallery = document.getElementById('image-gallery');
-          gallery.innerHTML = '<p class="text-center">No photos found for this date.</p>';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  </script>
 
   <!-- Bootstrap JS (optional) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
