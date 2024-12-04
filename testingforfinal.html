@@ -5,60 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Final Testing</title>
 
-  <!-- Link to Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    
-body{
-    background:black;
-    color: white;
-}
+    body {
+      background: black;
+      color: white;
+    }
 
     /* Optional: Custom styling for the image */
     .apod-image {
       width: 100%;
       height: auto;
     }
+
     .container {
       margin-top: 30px;
     }
+
     .topnav {
-  background-color: #333;
-  overflow: hidden;
-}
+      background-color: #333;
+      overflow: hidden;
+    }
 
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
+    /* Style the links inside the navigation bar */
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
 
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
+    /* Change the color of links on hover */
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
 
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
+    /* Add a color to the active/current link */
+    .topnav a.active {
+      background-color: #04AA6D;
+      color: white;
+    }
   </style>
 </head>
 <body>
-    <div class="container">
+  <div class="container">
     <h1 class="text-center">NASA Astronomy Picture of the Day</h1>
     
     <!-- Placeholder for image and description -->
     <div class="row">
       <div class="col-md-8">
-        <img id="apodImage" class="apod-image" src="" alt="NASA APOD" />
+        <img id="apodImage" class="apod-image" src="" alt="NASA APOD" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400.png?text=Image+Not+Found';" />
       </div>
       <div class="col-md-4">
         <h3 id="apodTitle"></h3>
@@ -76,21 +76,28 @@ body{
     fetch(apiUrl)
       .then(response => response.json())
       .then(data => {
-        // Update the image source and description
-        const imageElement = document.getElementById('apodImage');
-        const titleElement = document.getElementById('apodTitle');
-        const descriptionElement = document.getElementById('apodDescription');
+        // Log the image URL to verify
+        console.log("Image URL:", data.url);
 
-        // Set the content dynamically
-        imageElement.src = data.url;  // Set the image URL
-        titleElement.textContent = data.title;  // Set the title
-        descriptionElement.textContent = data.explanation;  // Set the explanation
+        // Check if the media type is an image
+        if (data.media_type === 'image') {
+          const imageElement = document.getElementById('apodImage');
+          const titleElement = document.getElementById('apodTitle');
+          const descriptionElement = document.getElementById('apodDescription');
+
+          // Set the content dynamically
+          imageElement.src = data.url;  // Set the image URL
+          titleElement.textContent = data.title;  // Set the title
+          descriptionElement.textContent = data.explanation;  // Set the explanation
+        } else {
+          console.error("The returned media is not an image:", data);
+        }
       })
       .catch(error => {
         console.error('Error fetching the APOD data:', error);
       });
   </script>
-  
+
   <div class="container">
     <div class="row">
       <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
@@ -100,7 +107,6 @@ body{
                alt="Asteriod Image">
           <div class="card-body">
             <h5 class="card-title">Asteroids Near Earth</h5>
-            <!-- Wrap only the card text inside the <a> link -->
             <a href="https://alanreyes77.github.io/aptest.html" class="card-link"> 
               <p class="card-text">NASA has a wonderful part where you can see near-earth objects.</p>
             </a>
@@ -109,6 +115,7 @@ body{
       </div>
     </div>
   </div>
+
   
 
     <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
