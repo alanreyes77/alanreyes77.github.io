@@ -39,7 +39,7 @@
 
         async function fetchAsteroidData(asteroidId) {
             const apiKey = 'DEMO_KEY';  // Use your own API key if needed
-            const url = `https://api.nasa.gov/neo/rest/v1/neo/${asteroidId}?api_key=${apiKey}`;
+            const url = `https://api.nasa.gov/neo/rest/v1/neo/${asteroidId}?api_key=$5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD`;
             try {
                 const response = await fetch(url);
                 const data = await response.json();
@@ -83,3 +83,4 @@
     </script>
 </body>
 </html>
+
