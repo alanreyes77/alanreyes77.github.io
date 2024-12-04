@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Image Search</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h1 class="text-center">NASA Image Search</h1>
+
+        <!-- Search input and button -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <input type="text" id="searchQuery" class="form-control" placeholder="Enter search term (e.g., 'mars', 'moon')">
+                <button id="searchButton" class="btn btn-primary mt-3 w-100">Search</button>
+            </div>
+        </div>
+
+        <!-- Loading spinner -->
+        <div id="loading" class="text-center mt-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Image Results -->
+        <div id="imageResults" class="row mt-4"></div>
+    </div>
+
+    <!-- Bootstrap JS (for functionality like dropdowns, modals, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS for functionality -->
+    <script>
+        // Your NASA API key
+        const apiKey = '5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
+
+        // DOM elements
+        const searchButton = document.getElementById('searchButton');
+        const searchQuery = document.getElementById('searchQuery');
+        const loadingElement = document.getElementById('loading');
+        const imageResults = document.getElementById('imageResults');
+
+        // Function to search NASA images
+        async function searchImages(query) {
+            const url = `https://images-api.nasa.gov/search?q=${query}&media_type=image`;
+            try {
+                // Show loading spinner
+                loadingElement.style.display = 'block';
+                imageResults.innerHTML = ''; // Clear previous results
+
+                // Fetch results from NASA API
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+
+                const data = await response.json();
+                const items = data.collection.items;
+
+                // Hide loading spinner
+                loadingElement.style.display = 'none';
+
+                // Check if no results found
+                if (items.length === 0) {
+                    imageResults.innerHTML = '<p class="text-center">No results found.</p>';
+                    return;
+                }
+
+                // Loop through the results and display images
+                items.forEach(item => {
+                    const imageUrl = item.links?.find(link => link.render === 'image')?.href;
+                    if (imageUrl) {
+                        const imageCard = document.createElement('div');
+                        imageCard.classList.add('col-md-4', 'mb-4');
+                        imageCard.innerHTML = `
+                            <div class="card">
+                                <img src="${imageUrl}" class="card-img-top" alt="NASA Image">
+                                <div class="card-body">
+                                    <h5 class="card-title">Image</h5>
+                                </div>
+                            </div>
+                        `;
+                        imageResults.appendChild(imageCard);
+                    }
+                });
+            } catch (error) {
+                loadingElement.style.display = 'none';
+                imageResults.innerHTML = `<p class="text-center text-danger">${error.message}</p>`;
+            }
+        }
+
+        // Event listener for the search button
+        searchButton.addEventListener('click', () => {
+            const query = searchQuery.value.trim();
+            if (query) {
+                searchImages(query);
+            }
+        });
+
+        // Optional: Handle enter key press for search
+        searchQuery.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchQuery.value.trim();
+                if (query) {
+                    searchImages(query);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
