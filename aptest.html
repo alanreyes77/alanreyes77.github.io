@@ -41,7 +41,9 @@
 
     <script>
         const API_KEY = '5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD'; // Replace with your NASA API key
-        const BASE_URL = 'https://api.nasa.gov/neo/rest/v1/feed';
+        const BASE_URL_FEED = 'https://api.nasa.gov/neo/rest/v1/feed';
+        const BASE_URL_NEO = 'https://api.nasa.gov/neo/rest/v1/neo/'; // For individual NEO
+        const BASE_URL_BROWSE = 'https://api.nasa.gov/neo/rest/v1/neo/browse/'; // For browsing NEOs
         
         // Function to fetch and display NEO data
         async function fetchNeoData() {
@@ -49,7 +51,7 @@
             const endDate = document.getElementById('end-date').value;
             
             // Construct URL with the user-provided dates
-            const url = `${BASE_URL}?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
+            const url = `${BASE_URL_FEED}?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
             
             try {
                 const response = await fetch(url);
@@ -71,8 +73,43 @@
             }
         }
 
+        // Function to fetch additional SPK-ID and Close Approach Date from the individual NEO endpoint
+        async function fetchAdditionalData(neo) {
+            const neoId = neo.id; // Use the NEO ID to get more details from the "neo" endpoint
+
+            try {
+                const url = `${BASE_URL_NEO}${neoId}?api_key=${API_KEY}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Log the response for inspection
+                console.log(data);
+
+                // Check if the response contains close approach data
+                const closeApproachData = data.close_approach_data && data.close_approach_data.length > 0 
+                    ? data.close_approach_data[0]
+                    : null;
+                
+                const approachDate = closeApproachData ? closeApproachData.approach_date : 'N/A';
+                const missDistance = closeApproachData ? closeApproachData.miss_distance.astronomical : 'N/A';
+                
+                return {
+                    spkId: neo.spk_id || 'N/A', // Fallback if SPK-ID is not present
+                    approachDate,
+                    missDistance
+                };
+            } catch (error) {
+                console.error('Error fetching additional data:', error);
+                return {
+                    spkId: 'N/A',
+                    approachDate: 'N/A',
+                    missDistance: 'N/A'
+                };
+            }
+        }
+
         // Function to display NEO data in a table
-        function displayNeos(neoList) {
+        async function displayNeos(neoList) {
             const neoTableBody = document.getElementById('neo-table-body');
             neoTableBody.innerHTML = ''; // Clear any previous data
 
@@ -82,24 +119,18 @@
                 for (const neo of neos) {
                     const row = document.createElement('tr');
                     
-                    // Get the name, SPK-ID, and close approach data
-                    const spkId = neo.spk_id ? neo.spk_id : 'N/A';
+                    // Get the basic data
                     const name = neo.name || 'N/A';
 
-                    // Safely access the first close_approach_data entry if it exists
-                    const approachData = neo.close_approach_data && neo.close_approach_data.length > 0
-                        ? neo.close_approach_data[0]
-                        : null;
-
-                    const approachDate = approachData ? approachData.approach_date : 'N/A';
-                    const missDistance = approachData ? approachData.miss_distance.astronomical : 'N/A';
-
+                    // Fetch additional data (SPK-ID, Close Approach Date, and Miss Distance)
+                    const additionalData = await fetchAdditionalData(neo);
+                    
                     // Append row to the table
                     row.innerHTML = `
                         <td>${name}</td>
-                        <td>${spkId}</td>
-                        <td>${approachDate}</td>
-                        <td>${missDistance} AU</td>
+                        <td>${additionalData.spkId}</td>
+                        <td>${additionalData.approachDate}</td>
+                        <td>${additionalData.missDistance} AU</td>
                     `;
                     neoTableBody.appendChild(row);
                 }
@@ -150,6 +181,7 @@
 
 </body>
 </html>
+
       
     
                     
