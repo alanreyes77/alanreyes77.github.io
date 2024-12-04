@@ -33,12 +33,12 @@
     </style>
     <script>
         const API_KEY = '5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
-        const BASE_URL_FEED = 'https://api.nasa.gov/neo/rest/v1/feed';
+        const neoApiUrl = 'https://api.nasa.gov/neo/rest/v1/feed';
 
         async function fetchNeoData() {
             const startDate = document.getElementById('start-date').value;
             const endDate = document.getElementById('end-date').value;
-            const url = `${BASE_URL_FEED}?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
+            const url = `${neoApiUrl}?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
 
             try {
                 const response = await fetch(url);
@@ -120,4 +120,3 @@
 
 </body>
 </html>
-
