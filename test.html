@@ -1,112 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Final Testing</title>
-
-  <!-- Link to Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-    
-body{
-    background:black;
-    color: white;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NASA APOD</title>
+<!-- Link to Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+ body {
+background: black;
+color: white;
 }
-
-    /* Optional: Custom styling for the image */
-    .apod-image {
-      width: 100%;
-      height: auto;
-    }
-    .container {
-      margin-top: 30px;
-    }
-    .topnav {
-  background-color: #333;
-  overflow: hidden;
+.apod-image, iframe {
+width: 100%;
+height: auto;
 }
-
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+.container {
+margin-top: 30px;
 }
-
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-  </style>
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">NASA Astronomy Picture of the Day</h1>
-    <div class="row">
-    <div class="col-md-8">
-    <img id="apodImage" class="apod-image" src="" alt="NASA APOD" style="display: none;" />
-        <div id="apodVideo" style="display: none;"></div>
-    </div>
-        <div class="col-md-4">
-        <h3 id="apodTitle"></h3>
-    <p id="apodDescription"></p>
-    </div>
-    </div>
-        </div>
-        
-    
-        <script>
-        const apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
-        
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-        console.log(data); // Log data for debugging
-        const imageElement = document.getElementById('apodImage');
-        const videoContainer = document.getElementById('apodVideo');
-     const titleElement = document.getElementById('apodTitle');
-    const descriptionElement = document.getElementById('apodDescription');
-        
-        titleElement.textContent = data.title;
-        descriptionElement.textContent = data.explanation;
-        
-        if (data.media_type === 'image') {
-        imageElement.src = data.url;
-    imageElement.alt = data.title;
-        imageElement.style.display = 'block';
-        } else if (data.media_type === 'video') {
-        videoContainer.innerHTML = `
-        <iframe src="${data.url}" frameborder="0" allowfullscreen></iframe>
-        `;
-        videoContainer.style.display = 'block';
-        } else {
-        titleElement.textContent = 'Content not available';
-        descriptionElement.textContent = 'The media type is not supported.';
-        }
-        })
-        .catch(error => {
-        console.error('Error fetching the APOD data:', error);
-        document.getElementById('apodTitle').textContent = 'Unable to load APOD';
-        document.getElementById('apodDescription').textContent = 'Please try again later.';
-        const fallbackImage = document.getElementById('apodImage');
-        fallbackImage.src = 'https://via.placeholder.com/800x600.png?text=APOD+Not+Available';
-        fallbackImage.style.display = 'block';
+  <div class="container">
+    <h1 class="text-center">NASA Astronomy Picture of the Day</h1>
+    <div class="row">
+      <div class="col-md-8">
+        <img id="apodImage" class="apod-image" src="" alt="NASA APOD" style="display: none;" />
+        <div id="apodVideo" style="display: none;"></div>
+      </div>
+      <div class="col-md-4">
+        <h3 id="apodTitle"></h3>
+        <p id="apodDescription"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for fetching and displaying data -->
+  <script>
+    const apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Log data for debugging
+        const imageElement = document.getElementById('apodImage');
+        const videoContainer = document.getElementById('apodVideo');
+        const titleElement = document.getElementById('apodTitle');
+        const descriptionElement = document.getElementById('apodDescription');
+
+        titleElement.textContent = data.title;
+        descriptionElement.textContent = data.explanation;
+
+        if (data.media_type === 'image') {
+          imageElement.src = data.url;
+          imageElement.alt = data.title;
+          imageElement.style.display = 'block';
+        } else if (data.media_type === 'video') {
+          videoContainer.innerHTML = `
+            <iframe src="${data.url}" frameborder="0" allowfullscreen></iframe>
+          `;
+          videoContainer.style.display = 'block';
+        } else {
+          titleElement.textContent = 'Content not available';
+          descriptionElement.textContent = 'The media type is not supported.';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching the APOD data:', error);
+        document.getElementById('apodTitle').textContent = 'Unable to load APOD';
+        document.getElementById('apodDescription').textContent = 'Please try again later.';
+        const fallbackImage = document.getElementById('apodImage');
+        fallbackImage.src = 'https://via.placeholder.com/800x600.png?text=APOD+Not+Available';
+        fallbackImage.style.display = 'block';
+      });
+  </script>
 
 
- 
-  </script>
+
   
   <div class="container">
     <div class="row">
