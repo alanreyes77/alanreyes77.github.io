@@ -1,218 +1,83 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Final Testing</title>
-
-  <!-- Link to Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-    
-body{
-    background:black;
-    color: white;
-}
-
-    /* Optional: Custom styling for the image */
-    .apod-image {
-      width: 100%;
-      height: auto;
-    }
-    .container {
-      margin-top: 30px;
-    }
-    .topnav {
-  background-color: #333;
-  overflow: hidden;
-}
-
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASA APOD</title>
+  <!-- Link to Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: black;
+      color: white;
+    }
+    .apod-image, iframe {
+      width: 100%;
+      height: auto;
+    }
+    .container {
+      margin-top: 30px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-    <h1 class="text-center">NASA Astronomy Picture of the Day</h1>
-    
-    <!-- Placeholder for image and description -->
-    <div class="row">
-      <div class="col-md-8">
-        <img id="apodImage" class="apod-image" src="" alt="NASA APOD" />
-      </div>
-      <div class="col-md-4">
-        <h3 id="apodTitle"></h3>
-        <p id="apodDescription"></p>
-      </div>
-    </div>
-  </div>
+  <div class="container">
+    <h1 class="text-center">NASA Astronomy Picture of the Day</h1>
+    <div class="row">
+      <div class="col-md-8">
+        <img id="apodImage" class="apod-image" src="" alt="NASA APOD" style="display: none;" />
+        <div id="apodVideo" style="display: none;"></div>
+      </div>
+      <div class="col-md-4">
+        <h3 id="apodTitle"></h3>
+        <p id="apodDescription"></p>
+      </div>
+    </div>
+  </div>
 
-  <!-- JavaScript for fetching and displaying data -->
-  <script>
-    // API URL
-    const apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
+  <!-- JavaScript for fetching and displaying data -->
+  <script>
+    const apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
 
-    // Fetch the data from the API
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        // Update the image source and description
-        const imageElement = document.getElementById('apodImage');
-        const titleElement = document.getElementById('apodTitle');
-        const descriptionElement = document.getElementById('apodDescription');
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Log data for debugging
+        const imageElement = document.getElementById('apodImage');
+        const videoContainer = document.getElementById('apodVideo');
+        const titleElement = document.getElementById('apodTitle');
+        const descriptionElement = document.getElementById('apodDescription');
 
-        // Set the content dynamically
-        imageElement.src = data.url;  // Set the image URL
-        titleElement.textContent = data.title;  // Set the title
-        descriptionElement.textContent = data.explanation;  // Set the explanation
-      })
-      .catch(error => {
-        console.error('Error fetching the APOD data:', error);
-      });
-  </script>
-  
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="card bg-dark text-white p-3">
-          <img src="https://media.istockphoto.com/id/1367810652/photo/meteor-impact-on-earth-fired-asteroid-in-collision-with-planet-contain-3d-rendering-elements.jpg?s=612x612&w=0&k=20&c=f48HSAwMLHMPIe70NUf4tCV_bd-ZcLEZfhfh7Y4iCGA=" 
-               class="card-img-top" 
-               alt="Asteriod Image">
-          <div class="card-body">
-            <h5 class="card-title">Asteroids Near Earth</h5>
-            <!-- Wrap only the card text inside the <a> link -->
-            <a href="https://alanreyes77.github.io/aptest.html" class="card-link"> 
-              <p class="card-text">NASA has a wonderful part where you can see near-earth objects.</p>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
+        titleElement.textContent = data.title;
+        descriptionElement.textContent = data.explanation;
 
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="card bg-dark text-white p-3">
-          <!-- Add an image to the card -->
-          <img src="https://images.unsplash.com/photo-1465101162946-4377e57745c3?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dW5pdmVyc2V8ZW58MHx8MHx8fDA%3D" class="card-img-top" alt="Should be a space image">
-      
-          <!-- Blockquote content -->
-          <blockquote class="blockquote mb-0 card-body">
-            <p>The Universe is not only stranger than we imagine, it is stranger than we can imagine.</p>
-            <footer class="blockquote-footer">
-              <small class="text-white">
-                Sir Arthur Eddington <cite title="Source Title">The Nature of the Physical World</cite>
-              </small>
-            </footer>
-          </blockquote>
-        </div>
-      </div>
-      
+        if (data.media_type === 'image') {
+          imageElement.src = data.url;
+          imageElement.alt = data.title;
+          imageElement.style.display = 'block';
+        } else if (data.media_type === 'video') {
+          videoContainer.innerHTML = `
+            <iframe src="${data.url}" frameborder="0" allowfullscreen></iframe>
+          `;
+          videoContainer.style.display = 'block';
+        } else {
+          titleElement.textContent = 'Content not available';
+          descriptionElement.textContent = 'The media type is not supported.';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching the APOD data:', error);
+        document.getElementById('apodTitle').textContent = 'Unable to load APOD';
+        document.getElementById('apodDescription').textContent = 'Please try again later.';
+        const fallbackImage = document.getElementById('apodImage');
+        fallbackImage.src = 'https://via.placeholder.com/800x600.png?text=APOD+Not+Available';
+        fallbackImage.style.display = 'block';
+      });
+  </script>
 
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card bg-dark text-white p-3">
-        <img src="https://science.nasa.gov/wp-content/uploads/2024/07/pia26344-perseverance-selfie-at-cheyava.jpg?w=4096&format=jpeg" class="card-img-top" alt="Pictures of mars hopefully ">
-        <div class="card-body">
-          <h5 class="card-title">Rover Images of Mars</h5>
-          <a href="https://alanreyes77.github.io/2api.html" class="card-link">
-          <p class="card-text">NASA is able to take pictures of the mars surface and send them back home for review</p>
-        </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card bg-dark text-white text-center p-3">
-        <img src="https://science.nasa.gov/wp-content/uploads/2023/03/main-image-star-forming-region-carina-nircam-final-5mb-1-jpeg.webp?w=4096&format=png" alt="Pictures of universe for einstein quote">
-        <blockquote class="blockquote mb-0">
-          <p>Two things are infinite: The universe and human stupidty: And im not sure about the universe</p>
-          <footer class="blockquote-footer">
-            <small>
-              Albert Einstein <cite title="Source Title"></cite>
-            </small>
-          </footer>
-        </blockquote>
-      </div>
-    </div>
-
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card bg-dark text-white text-center p-3">
-        <img src="https://preview.redd.it/did-you-know-high-rock-park-is-in-new-york-v0-7mtmbzgajl3d1.jpeg?width=1080&crop=smart&auto=webp&s=fa8a7fcc73fe793aa32bd9c1bf4e723471ec9bf5" alt="Satelitle image of staten island ">
-        <div class="card-body">
-          <h5 class="card-title">NASA Image Search</h5>
-          <a href="https://alanreyes77.github.io/test3api.html" class="card-link">
-          <p class="card-text">Click here to type in keywords to search for NASA.</p>
-        </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card bg-dark text-white text-center p-3">
-        <img src="https://www.sciencealert.com/images/2022/09/GettyImages-1339797675-1.jpg" alt="Speed of light picture">
-        <blockquote class="blockquote mb-0">
-            <p>Light brings us the news of the Universe</p>
-            <footer class="blockquote-footer">
-                <small class="text-white">
-                    Sir William Bragg<cite title="Source Title">1862</cite>
-                </small>
-            </footer>
-        </blockquote>
-      </div>
-    </div>
-
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card bg-dark text-white p-3 ">
-        <img src="https://cdn.mos.cms.futurecdn.net/2KWFyJ86EohXPCvT7z7waT-1200-80.jpg" alt="Stars maybe">
-        <blockquote class="blockquote mb-0">
-          <p>If the earth gets hit by an asteriod, it's game over. It's control-alt-delete for civilization  </p>
-          <footer class="blockquote-footer">
-            <small class="text-white">
-              <cite title="Source Title">   Bill Nye</cite>
-            </small>
-          </footer>
-        </blockquote>
-      </div>
-    </div>
-
-    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div class="card bg-dark text-white">
-        <img src="https://44.media.tumblr.com/0db81ec0f84284d22adf0c02a075e71a/tumblr_pyrhojfxkf1ucbyswo1_500.gif" alt="nasa photo of blackhole">
-        <div class="card-body">
-            <a href="https://science.nasa.gov/universe/black-holes/" class="card-link"> 
-          <h5 class="card-title">Black Hole</h5>
-          <p class="card-text">More Information on Black Holes.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-  <!-- Link to Bootstrap JS (optional, for certain Bootstrap components) -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
