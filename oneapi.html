@@ -18,18 +18,6 @@
             background-color: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
         }
-        table {
-            color: white;
-        }
-        table th, table td {
-            text-align: center;
-        }
-        table th {
-            background-color: #343a40;
-        }
-        table td {
-            background-color: #495057;
-        }
     </style>
     <script>
         const API_KEY = '5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
@@ -64,6 +52,7 @@
                 const neos = neoList[date];
                 for (const neo of neos) {
                     const row = document.createElement('tr');
+
                     const name = neo.name || 'N/A';
                     const spkId = neo.spk_id || 'N/A';
                     const approachDate = neo.close_approach_data && neo.close_approach_data[0] ? neo.close_approach_data[0].approach_date : 'N/A';
@@ -100,7 +89,7 @@
 
     <div class="mt-4">
         <h2 class="text-center">Near-Earth Object List</h2>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-dark">
             <thead>
                 <tr>
                     <th>Name</th>
