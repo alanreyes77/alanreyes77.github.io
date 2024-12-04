@@ -3,82 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Data in Cards</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <title>Final Testing</title>
+
+  <!-- Link to Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: black;
+      color: white;
+    }
+
+    /* Optional: Custom styling for the image */
+    .apod-image {
+      width: 100%;
+      height: auto;
+    }
+    .container {
+      margin-top: 30px;
+    }
+    .topnav {
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .topnav a.active {
+      background-color: #04AA6D;
+      color: white;
+    }
+
+    .mars-photo {
+      width: 100%;
+      height: auto;
+    }
+
+    /* For the structured info display */
+    .mars-photos-container {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1 class="text-center">NASA Astronomy Picture of the Day</h1>
 
-<!-- Card to trigger API data fetch -->
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-4">
-      <!-- Card linked to API (when clicked, will fetch API data and show it below) -->
-      <div class="card" id="fetchDataCard" style="cursor: pointer;">
-        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Click to Load API Data</h5>
-          <p class="card-text">Click on this card to fetch data from an API and display it below.</p>
-        </div>
+    <!-- Placeholder for image and description -->
+    <div class="row">
+      <div class="col-md-8">
+        <img id="apodImage" class="apod-image" src="" alt="NASA APOD" />
+      </div>
+      <div class="col-md-4">
+        <h3 id="apodTitle"></h3>
+        <p id="apodDescription"></p>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Section where API data will be displayed -->
-<div class="container mt-5" id="api-data-container">
-  <div class="row" id="cards-container">
-    <!-- The API data will be dynamically injected here -->
-  </div>
-</div>
-
-<script>
-  // Function to fetch the data from the API
-  async function fetchApiData() {
-    const apiUrl = "https://jsonplaceholder.typicode.com/posts"; // Example API
-
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      
-      // Call function to display the data in a structured format
-      displayData(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      document.getElementById('cards-container').innerHTML = 'Failed to load data.';
-    }
-  }
-
-  // Function to display the fetched data in cards
-  function displayData(data) {
-    const container = document.getElementById('cards-container');
-    container.innerHTML = ''; // Clear any previous content
-
-    // Loop through the data and create cards for each item
-    data.forEach(item => {
-      const card = `
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">${item.title}</h5>
-              <p class="card-text">${item.body}</p>
-            </div>
+  <!-- Card for Mars Rover Images -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+        <div class="card bg-dark text-white p-3">
+          <img src="https://science.nasa.gov/wp-content/uploads/2024/07/pia26344-perseverance-selfie-at-cheyava.jpg?w=4096&format=jpeg" class="card-img-top" alt="Pictures of Mars Rover">
+          <div class="card-body">
+            <h5 class="card-title">Rover Images of Mars</h5>
+            <p class="card-text">NASA is able to take pictures of the Mars surface and send them back home for review.</p>
+            <!-- Button to fetch Mars Rover Photos -->
+            <button class="btn btn-primary" onclick="fetchMarsRoverPhotos()">Show Mars Rover Photos</button>
           </div>
         </div>
-      `;
-      container.innerHTML += card; // Append the card to the container
-    });
-  }
+      </div>
+    </div>
 
-  // Event listener for card click to fetch API data
-  document.getElementById('fetchDataCard').addEventListener('click', function() {
-    fetchApiData(); // Fetch the data and display it
-  });
-</script>
+    <!-- Container to display fetched Mars photos -->
+    <div id="marsPhotosContainer" class="mars-photos-container row">
+      <!-- Photos will be displayed here -->
+    </div>
+  </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- JavaScript for fetching and displaying data -->
+  <script>
+    // NASA Astronomy Picture of the Day API
+    const apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const imageElement = document.getElementById('apodImage');
+        const titleElement = document.getElementById('apodTitle');
+        const descriptionElement = document.getElementById('apodDescription');
+
+        imageElement.src = data.url;
+        titleElement.textContent = data.title;
+        descriptionElement.textContent = data.explanation;
+      })
+      .catch(error => {
+        console.error('Error fetching the APOD data:', error);
+      });
+
+    // Function to fetch Mars Rover photos
+    function fetchMarsRoverPhotos() {
+      const marsApiUrl = 'https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2015-6-3&api_key=DEMO_KEY';
+
+      fetch(marsApiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const photos = data.photos;
+          const marsPhotosContainer = document.getElementById('marsPhotosContainer');
+          marsPhotosContainer.innerHTML = ''; // Clear previous photos
+
+          if (photos.length === 0) {
+            marsPhotosContainer.innerHTML = '<p>No photos available for the given date.</p>';
+            return;
+          }
+
+          // Loop through the photos and display them
+          photos.forEach(photo => {
+            const photoCard = document.createElement('div');
+            photoCard.classList.add('col-sm-6', 'col-md-4', 'col-lg-3', 'mb-4');
+            photoCard.innerHTML = `
+              <div class="card bg-dark text-white p-3">
+                <img src="${photo.img_src}" class="card-img-top mars-photo" alt="Mars Rover Photo">
+                <div class="card-body">
+                  <h5 class="card-title">Camera: ${photo.camera.full_name}</h5>
+                  <p class="card-text">Taken on: ${photo.earth_date}</p>
+                </div>
+              </div>
+            `;
+            marsPhotosContainer.appendChild(photoCard);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching Mars Rover photos:', error);
+        });
+    }
+  </script>
+
+  <!-- Link to Bootstrap JS (optional, for certain Bootstrap components) -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>
-
