@@ -11,17 +11,21 @@
     <style>
         body {
             background-image: url('https://mars.nasa.gov/system/news_items/main_images/9773_PIA27614-FigureA-320.jpg'); /* Mars surface image URL */
-            background-size: cover; /* Cover the entire viewport */
+            background-size: cover; /* Ensure background image covers entire screen */
             background-position: center; /* Center the image */
-            background-attachment: fixed; /* Fix the background image during scrolling */
-            height: 100vh; /* Full viewport height */
+            background-attachment: fixed; /* Keep the background fixed while scrolling */
+            height: 100vh; /* Make the body cover the entire viewport height */
             color: white; /* Set text color to white to contrast with background */
+            margin: 0;
+            padding: 0;
         }
 
         .container {
             padding: 30px;
             background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background for container */
             border-radius: 10px;
+            max-width: 1200px; /* Optional: Set a max-width for the container */
+            margin-top: 30px;
         }
 
         .card-body {
@@ -134,4 +138,5 @@
     </script>
 </body>
 </html>
+
 
