@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>near earth obj</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    
+    <style>
+        body {
+            background-image: url('https://www.rmg.co.uk/sites/default/files/styles/full_width_1440/public/Asteroids_passing_Earth.jpg?itok=IYTtlPN8'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            color: white; 
+        }
+
+        .container {
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.7); 
+            border-radius: 10px;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.5); 
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+        }
+        table {
+            color: white; 
+        }
+
+        table th, table td {
+            text-align: center;
+            color: white; 
+        }
+
+        table th {
+            background-color: #343a40; 
+            color: white; 
+        }
+
+        table td {
+            background-color: #495057; 
+        }
+    </style>
+
+    <script>
+        const API_KEY = '5SWTFk7snJWBtWQZESAmhtE5llEtAfbiBkcX49RD'; 
+        const BASE_URL_FEED = 'https://api.nasa.gov/neo/rest/v1/feed'; 
+        async function fetchNeoData() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            
+           
+            const url = `${BASE_URL_FEED}?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                console.log(data);
+
+                if (data.error) {
+                    alert('Error: ' + data.error.message);
+                    return;
+                }
+                
+                const neoList = data.near_earth_objects;
+                displayNeos(neoList);
+            } catch (error) {
+                console.error('error getting data', error);
+                alert('not getting anytghing from api');
+            }
+        }
+
+        async function displayNeos(neoList) {
+            const neoTableBody = document.getElementById('neo-table-body');
+            neoTableBody.innerHTML = ''; 
+
+            for (const date in neoList) {
+                const neos = neoList[date];
+                for (const neo of neos) {
+                    const row = document.createElement('tr');
+                    
+                   
+                    const name = neo.name || 'N/A';
+                    const spkId = neo.spk_id || 'N/A';
+                    const approachDate = neo.close_approach_data && neo.close_approach_data.length > 0
+                        ? neo.close_approach_data[0].approach_date
+                        : 'N/A';
+                    const missDistance = neo.close_approach_data && neo.close_approach_data.length > 0
+                        ? neo.close_approach_data[0].miss_distance.astronomical
+                        : 'N/A';
+                    
+
+                    row.innerHTML = `
+                        <td>${name}</td>
+                        <td>${spkId}</td>
+                        <td>${approachDate}</td>
+                        <td>${missDistance} AU</td>
+                    `;
+                    neoTableBody.appendChild(row);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1 class="text-center">NASA Near-Earth Objects</h1>
+    
+  
+    <div class="mb-4">
+        <label for="start-date" class="form-label">Start Date:</label>
+        <input type="date" id="start-date" class="form-control" value="2024-12-01">
+    </div>
+
+    <div class="mb-4">
+        <label for="end-date" class="form-label">End Date:</label>
+        <input type="date" id="end-date" class="form-control" value="2024-12-04">
+    </div>
+
+    <button class="btn btn-primary" onclick="fetchNeoData()">Fetch NEO Data</button>
+    
+   
+    <div class="mt-4">
+        <h2 class="text-center">Near-Earth Object List</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>SPK-ID</th>
+                    <th>Close Approach Date</th>
+                    <th>Miss Distance (AU)</th>
+                </tr>
+            </thead>
+            <tbody id="neo-table-body">
+               
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+      
