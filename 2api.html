@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center">Mars Rover Photos Query</h1>
+        <h1 class="text-center">Mars Rover Photos by Sol</h1>
 
         <!-- Form for input -->
         <div class="row">
@@ -17,23 +17,6 @@
                 <div class="mb-3">
                     <label for="sol" class="form-label">Enter Sol (Martian Day)</label>
                     <input type="number" id="sol" class="form-control" placeholder="e.g. 1000" required>
-                </div>
-                <div class="mb-3">
-                    <label for="camera" class="form-label">Select Camera</label>
-                    <select id="camera" class="form-control">
-                        <option value="all">All Cameras</option>
-                        <option value="fhaz">FHAZ</option>
-                        <option value="rhz">RHAZ</option>
-                        <option value="ma1">MA1</option>
-                        <option value="ma2">MA2</option>
-                        <option value="chemcam">CHEMCAM</option>
-                        <option value="mardi">MARDI</option>
-                        <option value="navcam">NAVCAM</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="page" class="form-label">Page</label>
-                    <input type="number" id="page" class="form-control" placeholder="1" value="1" min="1">
                 </div>
                 <button class="btn btn-primary" id="fetchPhotosButton">Fetch Photos</button>
             </div>
@@ -51,20 +34,18 @@
     <script>
         document.getElementById('fetchPhotosButton').addEventListener('click', function() {
             const sol = document.getElementById('sol').value;
-            const camera = document.getElementById('camera').value;
-            const page = document.getElementById('page').value;
 
             if (sol === '') {
                 alert('Please enter a Martian Sol.');
                 return;
             }
 
-            fetchMarsPhotos(sol, camera, page);
+            fetchMarsPhotos(sol);
         });
 
-        async function fetchMarsPhotos(sol, camera = 'all', page = 1) {
+        async function fetchMarsPhotos(sol) {
             const apiKey = 'DEMO_KEY';  // Use your own API key for expanded usage
-            const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=${sol}&camera=${camera}&page=${page}&api_key=${apiKey}`;
+            const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=${sol}&api_key=${apiKey}`;
             
             try {
                 const response = await fetch(url);
@@ -73,7 +54,7 @@
                 if (data.photos && data.photos.length > 0) {
                     displayPhotos(data.photos);
                 } else {
-                    document.getElementById('photoResults').innerHTML = '<p>No photos found for the given criteria.</p>';
+                    document.getElementById('photoResults').innerHTML = '<p>No photos found for the given Sol.</p>';
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
